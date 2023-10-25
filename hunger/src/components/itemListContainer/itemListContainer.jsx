@@ -1,43 +1,39 @@
-import { useEffect, useState } from "react"
-import { Spin } from 'antd';
+import { useEffect, useState } from "react";
+import { Spin } from "antd";
 import Item from "../item/item";
+import style from "../itemListContainer/styles.module.css";
+import { Link, useParams } from "react-router-dom";
 
-const ItemListContainer = ({greeting}) => {
+const ItemListContainer = ({ greeting }) => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { nombreCategoria } = useParams();
 
-    const [products, setProduct] = useState([])
+  useEffect(() => {
+    const url = nombreCategoria
+      ? `https://fakestoreapi.com/products/category/${nombreCategoria}`
+      : `https://fakestoreapi.com/products`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((json) => {
+        console.log(json);
+        setProducts(json);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error); // Fix the error handling here
+      });
+    console.log(nombreCategoria);
+  }, []);
 
-    const promesa = new Promise((resolve,reject) =>{
-        const productosArray = [
-            {name: "Remera", precio: 7000, id: 1},
-            {name: "Gorra", precio: 4500, id: 2},
-            {name: "Botella", precio: 4000, id: 3},
-            {name: "Agenda", precio: 3500, id: 4}
-        ]
-        setTimeout(() =>{
-            productosArray.length > 0 ? resolve(productosArray) : reject({data: [], message: "No hay productos"})
-        },5000)
-    })
+  if (loading) return <Spin />;
+  return (
+    <div className={style.container}>
+      {products.map((pr, index) => (
+        <Item producto={pr} key={index} />
+      ))}
+    </div>
+  );
+};
 
-    useEffect(() => {
-        promesa
-        .then(res => {
-            console.log(res)
-            setProduct(res)})
-        .catch(error => console.log(error.message))
-    }, [])
-    return(
-        <>
-            <h2>{greeting}</h2>
-            {products.length > 0 ? (
-                <>
-                {products.map((prod,index) => <Item key={prod.id} producto={prod}/>)}
-                </>
-            ) :(
-                <Spin />
-            )
-        
-        }
-        </>
-    )
-}
-export default ItemListContainer
+export default ItemListContainer;
