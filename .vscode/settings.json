@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.commandsToSkipShell": [
+        "\"terminal.external.windowsExec\":\"${env:windir}\\\\system32\\\\cmd.exe\""
+    ]
+}

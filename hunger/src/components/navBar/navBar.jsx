@@ -1,37 +1,23 @@
-import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Space } from 'antd';
-import CardWidget from '../cartWidget/cartWidget';
-const items = [
-    {
-      label: <a href="https://www.antgroup.com">Inicio</a>,
-      key: '0',
-    },
-    {
-      label: <a href="https://www.aliyun.com">Recetas</a>,
-      key: '1',
-    },
-    {
-      type: 'divider',
-    },
-    {
-      label: 'Tienda',
-      key: '3',
-    },
-  ];
-const NavBar = () => {
-  return (
-    <div>
-      <Dropdown menu={{ items }} trigger={["click"]}>
-        <a onClick={(e) => e.preventDefault()}>
-          <Space>
-            Menu
-            <DownOutlined />
-          </Space>
-        </a>
-      </Dropdown>
-      <CardWidget/>
-    </div>
-  );
-};
+import CartWidget from '../cartWidget/cartWidget';
+import style from './styles.module.css'
+import { NavLink} from 'react-router-dom'
 
-export default NavBar;
+const NavBar = () => {
+
+  const arrayDeCategoria = [
+    "Remera",
+    "Gorra",
+    "Botella",
+    "Taza"
+  ]
+
+  return(
+    <div className={style.navbar}>
+      <h1>Hunger</h1>
+      {arrayDeCategoria.map((cat,index) => <p key={index}>{cat}</p>)}
+      <CartWidget/>
+    </div>
+  )
+}
+
+export default NavBar
